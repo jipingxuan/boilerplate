@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
   cities();            // build base table
   addColumns(cityPop); // add city size
   addEvents();         // hover click
+  debugAjax();         // load GeoJSON
 });
 
 function cities() {
@@ -63,4 +64,30 @@ function addEvents() {
   table.addEventListener('click', function () {
     alert('Hey, you clicked me!');
   });
+}
+
+// Week 4: Web Data and Debugging 2 (AJAX)
+
+function debugCallback(myData) {
+  // write data to page
+  document.querySelector('#myDiv').insertAdjacentHTML(
+    'beforeend',
+    '<br>GeoJSON data:<br>' + JSON.stringify(myData)
+  );
+}
+
+function debugAjax() {
+  // fetch GeoJSON file
+  fetch('data/MegaCities.geojson')
+    .then(function (response) {
+      // parse JSON
+      return response.json();
+    })
+    .then(function (json) {
+      // send to callback
+      debugCallback(json);
+    })
+    .catch(function (err) {
+      console.error('GeoJSON load error:', err);
+    });
 }
